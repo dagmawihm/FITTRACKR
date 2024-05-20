@@ -1,30 +1,33 @@
 import React, { useState } from "react";
-import { LineChart } from '@mui/x-charts';
+import Progress from "../components/Progress";
+import EditWorkOutProgram from "../components/EditWorkOutProgram";
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
 function WorkOutProgram() {
-    const [modalContent, setModalContent] = useState({ visible: false, name: "" });
+
+    const [modalContent, setModalContent] = useState({ progressVisible: false, editVisible: false, name: "" });
 
     const handleWorkoutClick = (exercise) => {
-        setModalContent({ visible: true, name: exercise });
+        setModalContent({ progressVisible: true, editVisible: false, name: exercise });
+    };
+
+    const handleEditClick = () => {
+        setModalContent({ progressVisible: false, editVisible: true, name: "" });
     };
 
     const closeModal = () => {
-        setModalContent({ visible: false, name: "" });
+        setModalContent({ progressVisible: false, editVisible: false, name: "" });
     };
 
-
-    function getRandomNumbers(count, min, max) {
-        return Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min);
-    }
-    const xAxisData = [1, 2, 3, 4, 5];
-    const yAxisData = getRandomNumbers(5, 100, 200);
 
     return (
         <div id="workoutprogram">
             <div className="px-10 mt-7">
                 <div className="flex flex-col gap-3">
+                    <h3 className="flex justify-end" onClick={() => handleEditClick("Incline Bench Press")}><FontAwesomeIcon className=" w-6 h-6" icon={faPenToSquare} /> Edit</h3>
                     <div className="flex text-lg">CHEST</div>
                     <div className="flex justify-between bg-slate-100 rounded-md py-2 px-4 cursor-pointer" onClick={() => handleWorkoutClick("Flat Bench Press")}>
                         <span>Flat Bench Press</span>
@@ -35,7 +38,7 @@ function WorkOutProgram() {
                         <span>150 lbs</span>
                     </div>
                     <hr className="w-full mt-1 left-0 border-gray-300" />
-                    <div className="flex text-lg">TRICEP</div>
+                    <div className="flex text-lg">TRICEPS</div>
                     <div className="flex justify-between bg-slate-100 rounded-md py-2 px-4 cursor-pointer" onClick={() => handleWorkoutClick("Cable Extension")}>
                         <span>Cable Extension</span>
                         <span>150 lbs</span>
@@ -65,7 +68,7 @@ function WorkOutProgram() {
                         <span>150 lbs</span>
                     </div>
                     <hr className="w-full mt-1 left-0 border-gray-300" />
-                    <div className="flex text-lg">BICEP</div>
+                    <div className="flex text-lg">BICEPS</div>
                     <div className="flex justify-between bg-slate-100 rounded-md py-2 px-4 cursor-pointer" onClick={() => handleWorkoutClick("Incline Curls")}>
                         <span>Incline Curls</span>
                         <span>150 lbs</span>
@@ -104,51 +107,20 @@ function WorkOutProgram() {
                 </div>
             </div>
 
-            {modalContent.visible && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
+            {modalContent.progressVisible && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-20">
                     <div className="bg-white rounded-md p-5 max-w-md w-full">
                         <button onClick={closeModal} className="float-right text-2xl border px-2">&times;</button>
-                        <h2 className="text-lg font-bold mb-4">{modalContent.name}</h2>
+                        <Progress />
+                    </div>
+                </div>
+            )}
 
-                        <LineChart className="w-full h-full"
-                            xAxis={[
-                                {
-                                    label: "Date",
-                                    data: xAxisData
-                                },
-                            ]}
-                            yAxis={[{ label: "lbs" }]}
-                            series={[
-                                {
-                                    data: yAxisData,
-                                    area: true,
-                                    color: 'rgba(55, 65, 81, 0.8)',
-                                },
-                            ]}
-                            height={400}
-                        />
-                        <div className="flex flex-col gap-2">
-                            <div className="flex justify-between bg-slate-100 rounded-md py-2 px-4 cursor-pointer" onClick={() => handleWorkoutClick("Leg Extension")}>
-                                <span>05/19/2024</span>
-                                <span>150 lbs</span>
-                                <span>12 REPS</span>
-                            </div>
-                            <div className="flex justify-between bg-slate-100 rounded-md py-2 px-4 cursor-pointer" onClick={() => handleWorkoutClick("Leg Extension")}>
-                                <span>05/19/2024</span>
-                                <span>150 lbs</span>
-                                <span>12 REPS</span>
-                            </div>
-                            <div className="flex justify-between bg-slate-100 rounded-md py-2 px-4 cursor-pointer" onClick={() => handleWorkoutClick("Leg Extension")}>
-                                <span>05/19/2024</span>
-                                <span>150 lbs</span>
-                                <span>12 REPS</span>
-                            </div>
-                            <div className="flex justify-between bg-slate-100 rounded-md py-2 px-4 cursor-pointer" onClick={() => handleWorkoutClick("Leg Extension")}>
-                                <span>05/19/2024</span>
-                                <span>150 lbs</span>
-                                <span>12 REPS</span>
-                            </div>
-                        </div>
+            {modalContent.editVisible && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-20">
+                    <div className="flex flex-col bg-white rounded-md p-5 max-w-md w-full" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+                        <div><button onClick={closeModal} className="float-right text-2xl border w-7 px-2">&times;</button></div>
+                        <EditWorkOutProgram />
                     </div>
                 </div>
             )}

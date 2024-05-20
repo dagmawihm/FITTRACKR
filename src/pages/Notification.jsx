@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Footer from "../components/Footer";
 
 
 
@@ -66,7 +67,7 @@ function Notification() {
 
 
 
-
+                    <Footer />
                 </div>
             </div>
         </div>
