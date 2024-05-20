@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import WorkOutLog from "../components/WorkOutLog";
 import { faCircleCheck, faCalendarDays, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,8 +24,10 @@ function Home() {
                 <WorkOutLog />
                 <WorkOutLog />
                 <WorkOutLog />
-            </div>
 
+                
+                <Footer />
+            </div>
         </div>
     );
 

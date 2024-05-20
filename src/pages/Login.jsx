@@ -4,14 +4,15 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from "react-router-dom";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function Login() {
 
     const [formData, setFormData] = useState({ email: "", password: "", checked: false });
 
-    const handleChange = (evt) => {
-        const changedField = evt.target.name;
-        const newValue = evt.target.value;
+    const handleChange = (e) => {
+        const changedField = e.target.name;
+        const newValue = e.target.value;
         setFormData((currData) => {
             return {
                 ...currData,
@@ -20,8 +21,8 @@ function Login() {
         });
     };
 
-    const handleCheckboxChange = (event) => {
-        const newValue = event.target.checked;
+    const handleCheckboxChange = (e) => {
+        const newValue = e.target.checked;
         setFormData((currData) => ({
             ...currData,
             checked: newValue,
@@ -51,9 +52,7 @@ function Login() {
                         </div>
                     </div>
 
-                    <div className=" flex justify-center text-gray-400">
-                        <p>Copyright © Your Website 2024.</p>
-                    </div>
+                    <Footer />
                 </div>
 
 
