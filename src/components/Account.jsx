@@ -109,7 +109,7 @@ function Account() {
                             value={accountData.currentPassword}
                             type="password"
                             onChange={handleChange}
-                            label="Current Password"
+                            label="Password"
                             required
                         />
                         <Button variant="contained">UPDATE</Button>

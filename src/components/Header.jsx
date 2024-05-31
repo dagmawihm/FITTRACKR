@@ -3,9 +3,25 @@ import Logo from "./Images/logo.png"
 import { NavLink } from "react-router-dom";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
-function Header() {
+function Header({ user, setUser }) {
     const [showMenu, setShowMenu] = useState(false);
+
+
+    const handleLogout = async () => {
+        try {
+            const response = await axios.post('/user/logout');
+            if (response.data.message === 'Logged out successfully') {
+                setUser(false);
+                setShowMenu(!showMenu);
+            }
+        }
+        catch (e) {
+            alert(e);
+        }
+
+    };
 
     return (
         <div>
@@ -18,13 +34,20 @@ function Header() {
                 {showMenu && (
                     <div className="bg-slate-400 shadow-2xl absolute rounded-md my-12 px-3 py-1 flex flex-row self-end z-10">
                         <ul>
-                            <NavLink to={"/"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Home</li></NavLink>
-                            <NavLink to={"/profile"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Profile</li></NavLink>
-                            <NavLink to={"/notification"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Notification <span className="px-1 rounded-lg text-sm text-white bg-red-700">4</span></li></NavLink>
-                            <NavLink to={"/settings"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Settings</li></NavLink>
-                            <NavLink to={"/login"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Login</li></NavLink>
-                            <NavLink to={"/signup"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Sign Up</li></NavLink>
-
+                            {user ? (
+                                <>
+                                    <NavLink to={"/"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Home</li></NavLink>
+                                    <NavLink to={"/profile"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Profile</li></NavLink>
+                                    <NavLink to={"/notification"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Notification <span className="px-1 rounded-lg text-sm text-white bg-red-700">4</span></li></NavLink>
+                                    <NavLink to={"/settings"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Settings</li></NavLink>
+                                    <NavLink to={""}><li onClick={handleLogout} className="hover:bg-slate-300">Logout</li></NavLink>
+                                </>
+                            ) : (
+                                <>
+                                    <NavLink to={"/login"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Login</li></NavLink>
+                                    <NavLink to={"/signup"}><li onClick={() => setShowMenu(!showMenu)} className="hover:bg-slate-300">Sign Up</li></NavLink>
+                                </>
+                            )}
                         </ul>
                     </div>
                 )}

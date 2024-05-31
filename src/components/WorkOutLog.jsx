@@ -20,11 +20,28 @@ function WorkOutLog() {
     const handleCheckboxChange = (e) => {
         const changedField = e.target.name;
         const newValue = e.target.checked;
-        setLogData((currData) => ({
-            ...currData,
-            [changedField]: newValue,
-        }));
+
+        const weightFilled = logData[`weight${changedField.charAt(changedField.length - 1)}`].trim() !== "";
+        const repsFilled = logData[`reps${changedField.charAt(changedField.length - 1)}`].trim() !== "";
+
+        if (weightFilled && repsFilled) {
+            setLogData((currData) => ({
+                ...currData,
+                [changedField]: newValue,
+            }));
+            
+            if(!logData[changedField]){
+                alert("good");
+            }
+        }
+        else
+        {
+            alert("log both weight & reps first");
+        }
     };
+    if (allLogsDone){
+        alert("chest is done");
+    }
 
     return (
         <div>

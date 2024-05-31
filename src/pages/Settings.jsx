@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 import MyInfo from "../components/MyInfo";
 import Account from "../components/Account";
@@ -29,43 +28,38 @@ function Settings() {
 
 
     return (
-        <div className=" flex justify-center w-full">
-            <div className=" w-11/12 my-2">
-                <Header />
+        <>
+            <div className="my-5 bg-gray-700 rounded-2xl text-white py-4">
+                <div className="flex flex-col gap-5">
 
-
-                <div className="my-5 bg-gray-700 rounded-2xl text-white py-4">
-                    <div className="flex flex-col gap-5">
-
-                        <div className="flex justify-center">
-                            <h1 className="  text-2xl">Settings <FontAwesomeIcon className=" w-5 h-5" icon={faGear} /></h1>
-                        </div>
+                    <div className="flex justify-center">
+                        <h1 className="  text-2xl">Settings <FontAwesomeIcon className=" w-5 h-5" icon={faGear} /></h1>
+                    </div>
 
 
 
-                        <div className="flex flex-row justify-around">
-                            <span name="myInfo" onClick={handleTabs} className={getClassName('myInfo')}>My Info</span>
-                            <span name="account" onClick={handleTabs} className={getClassName('account')}>Account</span>
-                            <span name="privacy" onClick={handleTabs} className={getClassName('privacy')}>Privacy</span>
-                        </div>
+                    <div className="flex flex-row justify-around">
+                        <span name="myInfo" onClick={handleTabs} className={getClassName('myInfo')}>My Info</span>
+                        <span name="account" onClick={handleTabs} className={getClassName('account')}>Account</span>
+                        <span name="privacy" onClick={handleTabs} className={getClassName('privacy')}>Privacy</span>
                     </div>
                 </div>
-
-                {tabs.myInfo && (
-                    <MyInfo />
-                )}
-
-                {tabs.account && (
-                    <Account />
-                )}
-
-                {tabs.privacy && (
-                    <Privacy />
-                )}
-
-                <Footer />
             </div>
-        </div>
+
+            {tabs.myInfo && (
+                <MyInfo />
+            )}
+
+            {tabs.account && (
+                <Account />
+            )}
+
+            {tabs.privacy && (
+                <Privacy />
+            )}
+
+            <Footer />
+        </>
     );
 }
 

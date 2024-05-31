@@ -120,7 +120,7 @@ function WorkOutProgram() {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-20">
                     <div className="flex flex-col bg-white rounded-md p-5 max-w-md w-full" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
                         <div><button onClick={closeModal} className="float-right text-2xl border w-7 px-2">&times;</button></div>
-                        <EditWorkOutProgram />
+                        <EditWorkOutProgram closeModal={closeModal}/>
                     </div>
                 </div>
             )}
