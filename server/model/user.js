@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Function to get yesterday's date
+const getYesterdayDate = () => {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date;
+};
+
 
 const WeightHistorySchema = new Schema({
     date: { type: Date, required: true },
@@ -39,6 +46,8 @@ const UserSchema = new Schema({
     email: { type: String, required: [true, 'Email is required'] },
     password: { type: String, required: [true, 'Password is required'] },
     emailSubscriptions: { type: Boolean, required: [true, 'Email Subscription preference is required'], default: true },
+    visitCount: { type: Number, default: 0 },
+    visitCountModifiedDate: { type: Date, default: getYesterdayDate },
     weightHistory: [WeightHistorySchema],
     exercises: [ExerciseSchema]
 }, { timestamps: true });

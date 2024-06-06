@@ -20,7 +20,7 @@ const verifyJWT = catchAsync(async (req, res, next) => {
                 return next(new ExpressError('Unauthorized ', 401))
             }
 
-            const user = await User.findById(decoded.id).select('-password -email');;
+            const user = await User.findById(decoded.id).select('-password');
             if (user) {
                 delete user.password;
                 delete user.email;

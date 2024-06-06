@@ -76,7 +76,7 @@ function Profile({setUser}) {
             )}
 
             {tabs.workOutProgram && (
-                <WorkOutProgram />
+                <WorkOutProgram setSendReq={setSendReq} sendReq={sendReq} exercises={userData.exercises} />
             )}
 
             {tabs.friends && (

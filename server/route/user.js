@@ -14,7 +14,17 @@ router.post('/auth', verifyJWT, users.auth);
 
 router.get('/profile', verifyJWT, users.profile);
 
+router.get('/firstthreesets', verifyJWT, users.firstThreeSets);
+
+router.post('/logset', verifyJWT, users.logset);
+
+router.post('/updatevisitcount', verifyJWT, users.updateVisitCount);
+
 router.post('/update', verifyJWT, users.update);
+
+router.post('/update/exercises', verifyJWT, users.updateExercises);
+
+router.post('/update/credentials', verifyJWT, users.updateCredentials);
 
 
 module.exports = router;

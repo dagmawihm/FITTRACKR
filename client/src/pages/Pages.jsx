@@ -48,10 +48,10 @@ function Pages() {
                 <div className=" w-11/12 my-2">
                     <div><Header setUser={setUser} user={user} /></div>
                     <Routes>
-                        <Route path='/' element={user ? <Home /> : <Navigate to='/login' />} />
+                        <Route path='/' element={user ? <Home setUser={setUser} /> : <Navigate to='/login' />} />
                         <Route path='/login' element={user ? <Navigate to='/' /> : <Login setUser={setUser} />} />
                         <Route path='/signup' element={user ? <Navigate to='/' /> : <SignUp setUser={setUser} />} />
-                        <Route path='/settings' element={user ? <Settings /> : <Navigate to='/login' />} />
+                        <Route path='/settings' element={user ? <Settings setUser={setUser} /> : <Navigate to='/login' />} />
                         <Route path='/profile' element={user ? <Profile setUser={setUser} /> : <Navigate to='/login' />} />
                         <Route path='/Notification' element={user ? <Notification /> : <Navigate to='/login' />} />
                     </Routes>

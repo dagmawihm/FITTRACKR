@@ -1,11 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { faCircleCheck, faEllipsisVertical, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextField, InputAdornment } from '@mui/material';
-function WorkOutLog() {
 
+import axios from 'axios';
+axios.defaults.withCredentials = true;
+
+
+function WorkOutLog({ muscleGroup, exerciseName }) {
     const [logData, setLogData] = useState({ weight1: "", reps1: "", log1: false, weight2: "", reps2: "", log2: false, weight3: "", reps3: "", log3: false });
     const allLogsDone = logData.log1 && logData.log2 && logData.log3;
+
+
+
+    useEffect(() => {
+        const reqData = {
+            params: {
+                date: new Date(),
+                exerciseName: exerciseName,
+                muscleGroup: muscleGroup
+            }
+        };
+        const getFirstThreeSets = async () => {
+            try {
+                const response = await axios.get('/user/firstthreesets', reqData);
+                if (response.data.message === 'successfull') {
+                    const weight1 = response.data.setHistory[0] ? response.data.setHistory[0].weight : "";
+                    const weight2 = response.data.setHistory[1] ? response.data.setHistory[1].weight : "";
+                    const weight3 = response.data.setHistory[2] ? response.data.setHistory[2].weight : "";
+
+                    const reps1 = response.data.setHistory[0] ? response.data.setHistory[0].reps : "";
+                    const reps2 = response.data.setHistory[1] ? response.data.setHistory[1].reps : "";
+                    const reps3 = response.data.setHistory[2] ? response.data.setHistory[2].reps : "";
+
+                    let log1 = false
+                    let log2 = false
+                    let log3 = false
+
+                    if (weight1 && reps1) {
+                        log1 = true
+                    }
+                    if (weight2 && reps2) {
+                        log2 = true
+                    }
+                    if (weight3 && reps3) {
+                        log3 = true
+                    }
+
+                    setLogData((currData) => {
+                        return {
+                            ...currData,
+                            weight1: weight1,
+                            weight2: weight2,
+                            weight3: weight3,
+                            reps1: reps1,
+                            reps2: reps2,
+                            reps3: reps3,
+                            log1: log1,
+                            log2: log2,
+                            log3: log3,
+                        };
+                    });
+                }
+            }
+            catch (e) {
+                alert(e);
+            }
+
+        }
+        getFirstThreeSets();
+    }, [exerciseName, muscleGroup]);
+
+
+
     const handleChange = (e) => {
         const changedField = e.target.name;
         const newValue = e.target.value;
@@ -20,34 +87,57 @@ function WorkOutLog() {
     const handleCheckboxChange = (e) => {
         const changedField = e.target.name;
         const newValue = e.target.checked;
-
-        const weightFilled = logData[`weight${changedField.charAt(changedField.length - 1)}`].trim() !== "";
-        const repsFilled = logData[`reps${changedField.charAt(changedField.length - 1)}`].trim() !== "";
+        console.log()
+        const weightFilled = logData[`weight${changedField.charAt(changedField.length - 1)}`] !== "";
+        const repsFilled = logData[`reps${changedField.charAt(changedField.length - 1)}`] !== "";
 
         if (weightFilled && repsFilled) {
             setLogData((currData) => ({
                 ...currData,
                 [changedField]: newValue,
             }));
-            
-            if(!logData[changedField]){
-                alert("good");
+
+            if (!logData[changedField]) {
+
+                const setData = {
+                    exerciseName: exerciseName,
+                    muscleGroup: muscleGroup,
+                    weight: logData[`weight${changedField.charAt(changedField.length - 1)}`],
+                    reps: logData[`reps${changedField.charAt(changedField.length - 1)}`],
+                }
+
+                const logset = async () => {
+                    try {
+                        await axios.post('/user/logset', setData);
+                    }
+                    catch (e) {
+                        alert(e);
+                    }
+                }
+                logset();
             }
         }
-        else
-        {
+        else {
             alert("log both weight & reps first");
         }
     };
-    if (allLogsDone){
-        alert("chest is done");
+    if (allLogsDone) {
+        const updatevisitcount = async () => {
+            try {
+                await axios.post('/user/updatevisitcount');
+            }
+            catch (e) {
+                alert(e);
+            }
+        }
+        updatevisitcount();
     }
 
     return (
         <div>
-            <div className=" flex flex-row justify-between mt-4">
-                <div className=" border p-1">
-                    CHEST  <FontAwesomeIcon className={allLogsDone ? "text-green-600" : ""} icon={faCircleCheck} />
+            <div className=" flex flex-row justify-between mt-6">
+                <div className=" border p-1 uppercase text-red-400">
+                    {muscleGroup}
                 </div>
                 <div className="">
                     <FontAwesomeIcon icon={faEllipsisVertical} />
@@ -55,7 +145,7 @@ function WorkOutLog() {
             </div>
 
             <div className=" my-2">
-                <p>Machine Chest Press <span className=" text-xs text-zinc-400">(suggested wegiht 160)</span></p>
+                <p>{exerciseName} <FontAwesomeIcon className={allLogsDone ? "text-green-600" : " hidden"} icon={faCircleCheck} /><span className=" text-xs text-zinc-400"> (suggested wegiht 160)</span></p>
             </div>
 
             <div className="flex justify-center">

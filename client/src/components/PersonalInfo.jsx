@@ -139,6 +139,15 @@ function PersonalInfo({ userData, setSendReq, sendReq }) {
         }));
     };
 
+
+
+    useEffect(() => {
+        if (userData.weightHistory) {
+            const { xAxisData, yAxisData } = extractDateAndWeight(userData.weightHistory, pickedDate.month.$y, pickedDate.month.$M + 1);
+            setChartData({ xAxisData, yAxisData });
+        }
+    }, [userData, pickedDate.month.$y, pickedDate.month.$M, datePickerDiv.month]);
+
     useEffect(() => {
         if (userData.firstName && userData.lastName && userData.sex && userData.weightHistory) {
             setPersonalData((currData) => ({
@@ -157,13 +166,7 @@ function PersonalInfo({ userData, setSendReq, sendReq }) {
             setChartData({ xAxisData, yAxisData });
         }
     }, [datePickerDiv.year, userData, pickedDate.year.$y]);
-
-    useEffect(() => {
-        if (userData.weightHistory) {
-            const { xAxisData, yAxisData } = extractDateAndWeight(userData.weightHistory, pickedDate.month.$y, pickedDate.month.$M + 1);
-            setChartData({ xAxisData, yAxisData });
-        }
-    }, [userData, pickedDate.month.$y, pickedDate.month.$M, datePickerDiv.month]);
+    
     let calorieNeeds = null
     if (userData.ft && userData.in && userData.sex && userData.weightHistory && userData.dob) {
         calorieNeeds = calculateCalorieNeeds(userData.sex, userData.weightHistory[userData.weightHistory.length - 1].weight, userData.dob, userData.ft, userData.in);

@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const ExpressError =  require('./utils/ExpressError')
 const user = require('./route/user');
+const exercises = require('./route/exercises');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 
 app.use('/user', user)
+app.use('/exercise', exercises)
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Founda', 404))

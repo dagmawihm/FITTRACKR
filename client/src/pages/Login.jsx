@@ -41,7 +41,6 @@ function Login({setUser}) {
             else {
                 alert(response.data.message);
             }
-
         }
         catch (e) {
             alert(e);

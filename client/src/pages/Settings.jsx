@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import MyInfo from "../components/MyInfo";
 import Account from "../components/Account";
 import Privacy from "../components/Privacy";
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 
-function Settings() {
+function Settings({setUser}) {
 
     const [tabs, setTabs] = useState({ myInfo: true, account: false, privacy: false });
+    const [userData, setUserData] = useState({});
+    const [sendReq, setSendReq] = useState(false);
 
     const handleTabs = (e) => {
         const clickedTab = e.currentTarget.getAttribute('name');
@@ -24,8 +28,23 @@ function Settings() {
         return tabs[tabName] ? 'bg-slate-500 rounded-xl py-1 px-2' : '';
     };
 
-
-
+    useEffect(() => {
+        const getProfile = async () => {
+            try {
+                const response = await axios.get('/user/profile');
+                if (response.data.message === 'successfull') {
+                    setUserData (response.data.user);
+                }
+            }
+            catch (e) {
+                if (e.response && e.response.status === 401) {
+                    setUser(false);
+                }
+            }
+    
+        }
+        getProfile();
+    },[setUser, sendReq]);
 
     return (
         <>
@@ -47,11 +66,11 @@ function Settings() {
             </div>
 
             {tabs.myInfo && (
-                <MyInfo />
+                <MyInfo userData={userData} setSendReq={setSendReq} sendReq={sendReq}/>
             )}
 
             {tabs.account && (
-                <Account />
+                <Account userData={userData} setSendReq={setSendReq} sendReq={sendReq} />
             )}
 
             {tabs.privacy && (
